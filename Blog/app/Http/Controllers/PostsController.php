@@ -86,4 +86,20 @@ class PostsController extends Controller
     {
         //
     }
+
+    // Custom functions
+
+    /**
+     * Display the specified resource by user_id.
+     * 
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    // public function showById($id)
+    // {
+    //     $posts = Post::all()->where('user_id',Auth::id());
+
+    //     $test = "Hello world";
+    //     return view('home')->with('posts', $posts)->with('test', $test);               
+    // }
 }

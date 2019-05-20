@@ -26,8 +26,9 @@
         <main class="container-fluid">
             @yield('content')
 
-            @include('inc.footer')
+            
         </main>
+        @include('inc.footer')
     </div>
 </body>
 </html>

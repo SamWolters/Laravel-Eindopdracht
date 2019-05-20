@@ -17,4 +17,5 @@
 
 Auth::routes();
 Route::resource('/', 'PostsController');
+
 Route::get('/home', 'HomeController@index')->name('home');
