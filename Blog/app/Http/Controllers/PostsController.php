@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -22,8 +23,9 @@ class PostsController extends Controller
         // Haalt records op voor index pagina
         $post = Post::first();
         $posts = Post::all();
+        $likes = Post::sum('likes');
 
-        return view('index')->with('post', $post)->with('posts', $posts);
+        return view('posts.index')->with('post', $post)->with('posts', $posts)->with('likes', $likes);
     }
 
     /**
@@ -90,6 +92,9 @@ class PostsController extends Controller
     public function show($id)
     {
         //
+        $post = Post::find($id);
+
+        return view('posts.show')->with('post', $post);
     }
 
     /**
@@ -101,6 +106,12 @@ class PostsController extends Controller
     public function edit($id)
     {
         //
+        $post = Post::find($id);
+        // Check for correct user
+        if(auth()->user()->id !==$post->user_id){
+            return redirect('user/posts')->with('error', 'Unauthorized Page');
+        }
+        return view('posts.edit')->with('post', $post);
     }
 
     /**
@@ -112,7 +123,41 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+// Validates the request
+$this->validate($request, [
+    'title' => 'required',
+    'body' => 'required',
+    'image' => 'image|nullable|max:1999'
+]);
+// Handle File Upload
+if($request->hasFile('image')){
+    // Get file
+    $image = $request->file('image');
+    // Get filename with the extension
+    $name = $request->file('image')->getClientOriginalName();
+    // Set destination path
+    $destinationPath = public_path('images/uploads/posts');
+    // Image path
+    $imagePath = $destinationPath . "/" . $name;
+    // Move image to destination path
+    $image->move($destinationPath, $name);
+    // Url for webserver
+    $path = 'images/uploads/posts/' . $name;
+
+} else {
+    $name = 'no-image.jpg';
+}
+
+// Create Post
+$post = Post::find($id);
+$post->title = $request->input('title');
+$post->body = $request->input('body');
+if($request->hasFile('image')){
+    $post->image = $name;
+}
+$post->save();
+
+return redirect('/user/posts')->with('success', 'Post Updated');
     }
 
     /**
@@ -124,6 +169,18 @@ class PostsController extends Controller
     public function destroy($id)
     {
         //
+        $post = Post::find($id);
+        // Check for correct user
+        if(auth()->user()->id !==$post->user_id){
+            return redirect('/user/posts')->with('error', 'Unauthorized Page');
+        }
+        if($post->cover_image != 'noimage.jpg'){
+            // Delete Image
+            Storage::delete('public/images/uploads/posts/'.$post->image);
+        }
+        
+        $post->delete();
+        return redirect('/user/posts')->with('success', 'Post Removed');
     }
 
     // Custom functions
