@@ -18,11 +18,12 @@
 <div class="row d-flex justify-content-center">
     <!-- testing with cards -->
     <div class="card m-2 text-center" style="width: 18rem;">
-        <img src="" class="card-img-top card-img mx-auto d-block pt-1" alt="test">
+    <img src="{{ $post->image }}" class="card-img-top card-img mx-auto d-block pt-1" alt="test">
         <div class="card-body pt-2">
             <h5 class="card-title font-weight-bold">adsfasdfa</h5>
             <p class="card-text">adsfadsf</p>
         </div>
     </div>
 </div>
+{{ $post->image }}
 @endsection

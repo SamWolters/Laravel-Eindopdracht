@@ -7,6 +7,11 @@ use App\Post;
 
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,6 +34,7 @@ class PostsController extends Controller
     public function create()
     {
         //
+        return view("posts.create");
     }
 
     /**
@@ -39,7 +45,40 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validates the request
+        $this->validate($request, [
+            'title' => 'required',
+            'body' => 'required',
+            'image' => 'image|nullable|max:1999'
+        ]);
+        // Handle File Upload
+        if($request->hasFile('image')){
+            // Get file
+            $image = $request->file('image');
+            // Get filename with the extension
+            $name = $request->file('image')->getClientOriginalName();
+            // Set destination path
+            $destinationPath = public_path('images/uploads/posts');
+            // Image path
+            $imagePath = $destinationPath . "/" . $name;
+            // Move image to destination path
+            $image->move($destinationPath, $name);
+            // Url for webserver
+            $path = 'images/uploads/posts/' . $name;
+
+        } else {
+            $name = 'no-image.jpg';
+        }
+
+        // Create Post
+        $post = new Post;
+        $post->title = $request->input('title');
+        $post->body = $request->input('body');
+        $post->user_id = auth()->user()->id;
+        $post->image = $name;
+        $post->save();
+
+        return redirect('/user/posts')->with('success', 'Post Created');
     }
 
     /**
