@@ -15,9 +15,9 @@ class UsersTableSeeder extends Seeder
     {
         // Create root user
         $admin = new User;
-        $admin->name = 'Sam Wolters';
-        $admin->email = 's.wolters9@icloud.com';
-        $admin->password = bcrypt('admin');
+        $admin->name = 'Admin';
+        $admin->email = 'admin@laravel.com';
+        $admin->password = bcrypt('Welkom123');
         $admin->save();
         $admin->roles()->attach(Role::where('name', 'admin')->first());
     }
