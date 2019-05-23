@@ -13,10 +13,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
     /**
      * Show the application dashboard.
@@ -25,8 +25,35 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $posts = Post::all()->where('user_id',Auth::id());
+        $posts = Post::all()->take(6);
 
-        return view('home')->with('posts', $posts);     
+        return view('index')->with('posts', $posts);     
+    }
+        /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function list()
+    {
+        // Get posts in order of timestamp
+        $posts = Post::orderBy('created_at', 'desc')->paginate(3);
+
+        return view('posts')->with('posts', $posts);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+        $post = Post::find($id);
+
+        return view('show')->with('post', $post);
     }
 }
