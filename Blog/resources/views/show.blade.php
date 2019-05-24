@@ -13,6 +13,14 @@
             </div>
         </div>
     </div>
+    <div class="col-2">
+        <div class="card  bg-dark text-light" style="width: 18rem;">
+            <div class="card-body">
+                <h4 class="card-title">{{ $likes }}</h4>
+                <h6 class="card-subtitle mb-2 text-muted">Likes</h6>
+            </div>
+        </div>
+    </div>
 </div>
 {{-- <example-component></example-component> --}}
 @endsection

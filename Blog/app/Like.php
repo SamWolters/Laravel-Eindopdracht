@@ -4,16 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Like extends Model
 {
     // Relatie met user
-    public function users() 
+    public function users()
     {
         return $this->belongsToMany(User::class);
     }
 
-    public function Like()
+    // Relatie met user
+    public function posts()
     {
-        return $this->hasMany(Like::class);
+        return $this->belongsToMany(Post::class);
     }
 }
