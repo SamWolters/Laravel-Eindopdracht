@@ -6,11 +6,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
-            <li class="nav-item active">
+            <li class="{{ Request::path() == '/' ? 'active nav-item' : 'nav-item' }}">
                 <a class="nav-link" href="{{ route('index') }}">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('list') }}">Posts</a>
+            <li class="{{ Request::path() == 'posts' ? 'active nav-item' : 'nav-item' }}">
+            <a class="nav-link" href="{{ route('list') }}">Posts</a>
             </li>
         </ul>
         <!-- Right Side Of Navbar -->
