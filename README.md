@@ -6,6 +6,11 @@ Eindopdracht voor PHP Leerjaar 2
 git clone https://github.com/SamWolters/Laravel-Eindopdracht.git
 ```
 
+## Composer install
+```composer
+composer install
+```
+
 ## Npm install
 Open de folder 'Blog' in Visual Studio Code, open de terminal en run de command.
 
